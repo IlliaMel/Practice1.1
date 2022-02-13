@@ -12,17 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
-namespace Practice1._1
+using Practice1._1.ViewModels;
+namespace Practice1._1.Views
 {
     /// <summary>
-    /// Логика взаимодействия для DateControl.xaml
+    /// Логика взаимодействия для DateControlView.xaml
     /// </summary>
-    public partial class DateControl : UserControl
+    public partial class DateControlView : UserControl
     {
-        public DateControl()
+        public DateControlView()
         {
             InitializeComponent();
+
+            DataContext = new DataControlViewModel();
         }
     }
 }
