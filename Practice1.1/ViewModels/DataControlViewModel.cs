@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel;
 using Practice1._1.Models;
 using Practice1._1.Tools;
@@ -21,11 +17,17 @@ namespace Practice1._1.ViewModels
         private string _age;
         private string _chineseData;
         private string _westData;
-        private enum WestDataEnum { Aries, Taurus, Gemini, Cancer, Leo, Virgo, Libra, Scorpio, Sagittarius, Capricorn, Aquarius, Pisces };
         private enum ChineseDataEnum { Monkey, Rooster, Dog, Pig, Rat, Ox, Tiger, Rabbit, Dragon, Snake, Horse, Goat };
         #endregion
 
         #region Properties
+        public RelayCommand<object> CheckDataCommand
+        {
+            get
+            {
+                return _checkCommand ?? (_checkCommand = new RelayCommand<object>(_ => Check(), CanExecute));
+            }
+        }
         public DateTime BDate
         {
             get { if (_date.BDate == DateTime.MinValue)
@@ -51,17 +53,13 @@ namespace Practice1._1.ViewModels
             get { return _chineseData; }
             set { _chineseData = value; OnChanged(); }
         }
-
-        public RelayCommand<object> CheckDataCommand
-        {
-            get
-            {
-                return _checkCommand ?? (_checkCommand = new RelayCommand<object>(_ => Check(), CanExecute));
-            }
-        }
-
-
         #endregion
+
+        protected virtual void OnChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = this.PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         #region BusinessLogic
         private bool CanExecute(object obj)
@@ -99,7 +97,24 @@ namespace Practice1._1.ViewModels
         }
         private string WestDataSign()
         {
-            return (ChineseDataEnum)(BDate.Year % 12) + "";
+            int Month = BDate.Month;
+            int Day = BDate.Day;
+            switch (Month)
+            {
+                case 12: return (Day >= 22) ? "Capricorn" : "Sagittarius";
+                case 11: return (Day >= 23) ? "Sagittarius" : "Scorpio";
+                case 10: return (Day >= 23) ? "Scorpio" : "Libra";
+                case 9: return (Day >= 23) ? "Libra" : "Virgo";
+                case 8: return (Day >= 23) ? "Virgo" : "Leo";
+                case 7: return (Day >= 23) ? "Leo" : "Cancer";
+                case 6: return (Day >= 22) ? "Cancer" : "Gemini";
+                case 5: return (Day >= 22) ? "Gemini" : "Taurus";
+                case 4: return (Day >= 21) ? "Taurus" : "Aries";
+                case 3: return (Day >= 21) ? "Aries" : "Pisces";
+                case 2: return (Day >= 20) ? "Pisces" : "Aquarius";
+                case 1: return (Day >= 21) ? "Aquarius" : "Capricorn";
+                default: return "";
+            }
         }
 
         private string ChineseDataSign()
@@ -116,11 +131,7 @@ namespace Practice1._1.ViewModels
 
         #endregion
 
-        protected virtual void OnChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
+        
 
     }
 }
