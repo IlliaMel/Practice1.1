@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="Practice1._1.DateControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Practice1._1"
+             mc:Ignorable="d" 
+             d:DesignHeight="250" d:DesignWidth="340" >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="30"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="Write Your B-Day" HorizontalAlignment="Center" FontSize="13" Foreground="Black" Margin="5,5,5,2" ></TextBlock>
+        <TextBox Name="TbBday" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextAlignment="Center" Height="25" Margin="5,0,5,5"></TextBox>
+        <TextBlock Grid.Row="2" Grid.Column="1"  Text="Your Age :" HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5" ></TextBlock>
+        <TextBlock Name="TxAge" Grid.Row="2" Grid.Column="2"  Text="age" HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5" ></TextBlock>
+
+        <TextBlock Grid.Row="3" Grid.Column="0"  Text="Chinese :" HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5" ></TextBlock>
+        <TextBlock Grid.Row="3" Grid.Column="2"  Text="West :" HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5" ></TextBlock>
+
+        <TextBlock Name="TxChineseData" Grid.Row="3" Grid.Column="1"  Text="ChineseData :" HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5" ></TextBlock>
+        <TextBlock Name="TxWestData" Grid.Row="3" Grid.Column="3"  Text="WestData :" HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5" ></TextBlock>
+
+        <Button Name="BCheck" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="25" Content="Check" Margin="10,5,10,0" Foreground="Black"  ></Button>
+
+    </Grid>
+</UserControl>
