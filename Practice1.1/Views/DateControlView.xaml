@@ -21,7 +21,7 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="Write Your B-Day" HorizontalAlignment="Center" FontSize="13" Foreground="Black" Margin="5,5,5,2" ></TextBlock>
-        <DatePicker Name="DpBDate" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" IsDropDownOpen="False" SelectedDateFormat="Short" SelectedDate="{Binding BDate, TargetNullValue={System:DateTime.Now}}"/>
+        <DatePicker Name="DpBDate" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" IsDropDownOpen="False" SelectedDateFormat="Short" SelectedDate="{Binding BDate}"/>
 
         <TextBlock Grid.Row="2" Grid.Column="1"  Text="Your Age :" HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5" ></TextBlock>
         <TextBlock Grid.Row="3" Grid.Column="0"  Text="Chinese :" HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5" ></TextBlock>
