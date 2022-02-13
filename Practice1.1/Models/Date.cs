@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace Practice1._1.Models
 {
     class Date
@@ -13,12 +12,15 @@ namespace Practice1._1.Models
         private DateTime _currentDate;
         #endregion
 
+        #region Constructors
         public Date(DateTime bDate, DateTime currentDate)
         {
             _bDate = bDate;
             _currentDate = currentDate;
         }
+        #endregion
 
+        #region Properties
         public DateTime BDate
         {
             get
@@ -42,6 +44,6 @@ namespace Practice1._1.Models
                 _currentDate = value;
             }
         }
-
+        #endregion
     }
 }
