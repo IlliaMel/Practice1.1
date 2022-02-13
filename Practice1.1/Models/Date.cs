@@ -13,9 +13,8 @@ namespace Practice1._1.Models
         #endregion
 
         #region Constructors
-        public Date(DateTime bDate, DateTime currentDate)
+        public Date(DateTime currentDate)
         {
-            _bDate = bDate;
             _currentDate = currentDate;
         }
         #endregion

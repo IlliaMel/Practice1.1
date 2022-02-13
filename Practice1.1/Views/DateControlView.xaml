@@ -21,15 +21,15 @@
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="Write Your B-Day" HorizontalAlignment="Center" FontSize="13" Foreground="Black" Margin="5,5,5,2" ></TextBlock>
-        <DatePicker Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" IsDropDownOpen="False" SelectedDateFormat="Short" SelectedDate="{Binding BDate}"/>
+        <DatePicker Name="DpBDate" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" IsDropDownOpen="False" SelectedDateFormat="Short" SelectedDate="{Binding BDate, TargetNullValue={System:DateTime.Now}}"/>
 
         <TextBlock Grid.Row="2" Grid.Column="1"  Text="Your Age :" HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5" ></TextBlock>
         <TextBlock Grid.Row="3" Grid.Column="0"  Text="Chinese :" HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5" ></TextBlock>
         <TextBlock Grid.Row="3" Grid.Column="2"  Text="West :" HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5" ></TextBlock>
 
-        <TextBlock Name="TxAge" Grid.Row="2" Grid.Column="2"  Text="{Binding Age, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5"  ></TextBlock>
-        <TextBlock Name="TxChineseData" Grid.Row="3" Grid.Column="1"  Text="{Binding ChineseData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5" ></TextBlock>
-        <TextBlock Name="TxWestData" Grid.Row="3" Grid.Column="3" Text="{Binding WestData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5" ></TextBlock>
+        <TextBlock Name="TxAge" Grid.Row="2" Grid.Column="2"  Text="{Binding Age, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5"  ></TextBlock>
+        <TextBlock Name="TxChineseData" Grid.Row="3" Grid.Column="1"  Text="{Binding ChineseData, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5" ></TextBlock>
+        <TextBlock Name="TxWestData" Grid.Row="3" Grid.Column="3" Text="{Binding WestData, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" FontSize="12" Foreground="Black" Margin="5,5,5,5" ></TextBlock>
 
         <Button Name="BCheck" Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="4" HorizontalAlignment="Stretch" VerticalAlignment="Center" Height="25" Content="Check" Command ="{Binding CheckDataCommand}" Margin="10,30,10,0" Foreground="Black"  ></Button>
 
