@@ -124,9 +124,11 @@ namespace Practice1._1.ViewModels
 
         private int ageValue()
         {
-            if (BDate.Month.CompareTo(_date.СurrentDate.Month) <= 0 && BDate.Day.CompareTo(_date.СurrentDate.Day) <= 0)
+            if (BDate.Month.CompareTo(_date.СurrentDate.Month) < 0)
                 return _date.СurrentDate.Year - BDate.Year;
-            return _date.СurrentDate.Year - BDate.Year - 1;
+            else if (BDate.Month.CompareTo(_date.СurrentDate.Month) == 0 && BDate.Day.CompareTo(_date.СurrentDate.Day) <= 0)
+                return _date.СurrentDate.Year - BDate.Year;
+           return _date.СurrentDate.Year - BDate.Year - 1;
         }
 
         #endregion
