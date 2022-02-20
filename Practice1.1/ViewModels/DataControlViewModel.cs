@@ -10,6 +10,21 @@ namespace Practice1._1.ViewModels
 {
     class DataControlViewModel : INotifyPropertyChanged
     {
+        private enum ChineseDataEnum
+        {
+            Monkey, 
+            Rooster, 
+            Dog, Pig, 
+            Rat, 
+            Ox, 
+            Tiger, 
+            Rabbit, 
+            Dragon, 
+            Snake, 
+            Horse, 
+            Goat
+        }
+
         #region Fields
         public event PropertyChangedEventHandler PropertyChanged;
         private RelayCommand<object> _checkCommand;
@@ -17,7 +32,7 @@ namespace Practice1._1.ViewModels
         private string _age;
         private string _chineseData;
         private string _westData;
-        private enum ChineseDataEnum { Monkey, Rooster, Dog, Pig, Rat, Ox, Tiger, Rabbit, Dragon, Snake, Horse, Goat };
+
         #endregion
 
         #region Properties
@@ -30,35 +45,52 @@ namespace Practice1._1.ViewModels
         }
         public DateTime BDate
         {
-            get { if (_date.BDate == DateTime.MinValue)
-                    return DateTime.Now;
-                return _date.BDate; }
-            set { _date.BDate = value; OnChanged(); }
+            get
+            {
+                return _date.BDate == DateTime.MinValue ? DateTime.Now : _date.BDate;
+            }
+            set
+            {
+                _date.BDate = value; 
+                OnChanged();
+            }
         }
 
         public string Age
         {
             get { return _age; }
-            set { _age = value; OnChanged(); }
+            set
+            {
+                _age = value; 
+                OnChanged();
+            }
         }
 
         public string WestData
         {
             get { return _westData; }
-            set { _westData = value; OnChanged(); }
+            set
+            {
+                _westData = value; 
+                OnChanged();
+            }
         }
 
         public string ChineseData
         {
             get { return _chineseData; }
-            set { _chineseData = value; OnChanged(); }
+            set
+            {
+                _chineseData = value; 
+                OnChanged();
+            }
         }
         #endregion
 
         protected virtual void OnChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChangedEventHandler handler = this.PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #region BusinessLogic
@@ -91,9 +123,7 @@ namespace Practice1._1.ViewModels
     
         private bool isValidBDate()
         {
-            if(ageValue() > 135 || BDate.CompareTo(_date.СurrentDate) > 0)
-                return false;
-            return true;
+            return ageValue() <= 135 && BDate.CompareTo(_date.СurrentDate) <= 0;
         }
         private string WestDataSign()
         {
@@ -126,9 +156,9 @@ namespace Practice1._1.ViewModels
         {
             if (BDate.Month.CompareTo(_date.СurrentDate.Month) < 0)
                 return _date.СurrentDate.Year - BDate.Year;
-            else if (BDate.Month.CompareTo(_date.СurrentDate.Month) == 0 && BDate.Day.CompareTo(_date.СurrentDate.Day) <= 0)
+            if (BDate.Month.CompareTo(_date.СurrentDate.Month) == 0 && BDate.Day.CompareTo(_date.СurrentDate.Day) <= 0)
                 return _date.СurrentDate.Year - BDate.Year;
-           return _date.СurrentDate.Year - BDate.Year - 1;
+            return _date.СurrentDate.Year - BDate.Year - 1;
         }
 
         #endregion
