@@ -21,9 +21,9 @@ namespace Practice1._1.ViewModels
         private bool _isAdult;
         private string _chineseData;
         private string _westData;
-        private string _fName = "FName";
-        private string _sName = "SName";
-        private string _email = "Email";
+        private string _fName = "";
+        private string _sName = "";
+        private string _email = "";
         private enum ChineseDataEnum { Monkey, Rooster, Dog, Pig, Rat, Ox, Tiger, Rabbit, Dragon, Snake, Horse, Goat };
         #endregion
 
