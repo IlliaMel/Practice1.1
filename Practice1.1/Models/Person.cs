@@ -39,6 +39,10 @@ namespace Practice1._1.Models
             Surname = surname;
             BDate = bDate;
         }
+
+        public Person()
+        {
+        }
         #endregion
 
         #region Properties

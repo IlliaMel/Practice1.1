@@ -56,10 +56,11 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\Date.cs" />
+    <Compile Include="Models\Person.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
-    <Compile Include="ViewModels\DataControlViewModel.cs" />
-    <Compile Include="Views\DateControlView.xaml.cs">
-      <DependentUpon>DateControlView.xaml</DependentUpon>
+    <Compile Include="ViewModels\PersonControlViewModel.cs" />
+    <Compile Include="Views\PersonControlView.xaml.cs">
+      <DependentUpon>PersonControlView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -73,9 +74,9 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\DateControlView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Views\PersonControlView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

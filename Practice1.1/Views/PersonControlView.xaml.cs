@@ -2,12 +2,13 @@
 using Practice1._1.ViewModels;
 namespace Practice1._1.Views
 {
-    public partial class DateControlView : UserControl
+    public partial class PersonControlView : UserControl
     {
-        public DateControlView()
+        public PersonControlView()
         {
             InitializeComponent();
-            DataContext = new DataControlViewModel();
+            DataContext = new PersonControlViewModel();
+           
         }
     }
 }
