@@ -55,7 +55,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\Date.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
     <Compile Include="ViewModels\PersonControlViewModel.cs" />
