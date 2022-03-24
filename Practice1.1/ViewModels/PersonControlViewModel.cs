@@ -3,8 +3,10 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using Practice1._1.Models;
 using Practice1._1.Tools;
+using Practice1._1.Tools.MyExceptions;
 using System.Runtime.CompilerServices;
 using System.Windows;
+
 
 
 namespace Practice1._1.ViewModels
@@ -124,9 +126,17 @@ namespace Practice1._1.ViewModels
 
         private void AsyncTask()
         {
-            _person = new Person(_fName, _sName, _email, BDate);
+            try
+            {
+                _person = new Person(_fName, _sName, _email, BDate);
+            }catch (InvalidPersonDataException ex)
+            {
+                MessageBox.Show(ex.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
             if (isValidBDate())
-            {           
+            {
                 if (DateTime.Now.Month == BDate.Month && DateTime.Now.Day == BDate.Day)
                 {
                     IsBirthday = true;
@@ -140,6 +150,10 @@ namespace Practice1._1.ViewModels
                 WestData = WestDataSign();
                 ChineseData = ChineseDataSign();
                 return;
+            }
+            else
+            {
+                MessageBox.Show("Illegal Data: write real BDay and your age can't be higher than 135 ");
             }
             clearFields();
         }
@@ -157,7 +171,7 @@ namespace Practice1._1.ViewModels
             WestData = "";
             ChineseData = "";
             BDate = DateTime.Now;
-            MessageBox.Show("Illegal Data: write real BDay and your age can't be higher than 135 ");
+          
         }
 
         private bool isValidBDate()

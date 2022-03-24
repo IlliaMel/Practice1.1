@@ -56,6 +56,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\Person.cs" />
+    <Compile Include="Tools\MyExceptions\InvalidDateException.cs" />
+    <Compile Include="Tools\MyExceptions\InvalidPersonDataException.cs" />
     <Compile Include="Tools\RelayCommand.cs" />
     <Compile Include="ViewModels\PersonControlViewModel.cs" />
     <Compile Include="Views\PersonControlView.xaml.cs">
