@@ -129,14 +129,7 @@ namespace Practice1._1.ViewModels
             try
             {
                 _person = new Person(_fName, _sName, _email, BDate);
-            }catch (InvalidPersonDataException ex)
-            {
-                MessageBox.Show(ex.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            if (isValidBDate())
-            {
+                isValidBDate();
                 if (DateTime.Now.Month == BDate.Month && DateTime.Now.Day == BDate.Day)
                 {
                     IsBirthday = true;
@@ -150,10 +143,18 @@ namespace Practice1._1.ViewModels
                 WestData = WestDataSign();
                 ChineseData = ChineseDataSign();
                 return;
+
+
             }
-            else
+            catch (InvalidPersonDataException ex)
             {
-                MessageBox.Show("Illegal Data: write real BDay and your age can't be higher than 135 ");
+                MessageBox.Show(ex.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            catch  (InvalidDateException ex)
+            {
+                MessageBox.Show(ex.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
             }
             clearFields();
         }
@@ -174,11 +175,12 @@ namespace Practice1._1.ViewModels
           
         }
 
-        private bool isValidBDate()
+        private void isValidBDate()
         {
-            if (ageValue() > 135 || BDate.CompareTo(DateTime.Now) > 0)
-                return false;
-            return true;
+            if (ageValue() > 135)
+                throw new InvalidPersonDataException("Your age can't be higher than 135");
+            if (BDate.CompareTo(DateTime.Now) > 0)
+                throw new InvalidPersonDataException("Write real BDay");
         }
         private string WestDataSign()
         {
