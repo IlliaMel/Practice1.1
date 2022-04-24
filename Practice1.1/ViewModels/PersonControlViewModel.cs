@@ -120,14 +120,11 @@ namespace Practice1._1.ViewModels
                 return true;
             return false;
         }
+ 
         private async Task Action()
-        {
-            await Task.Factory.StartNew(() => AsyncTask());
-        }
+        {     
+            await Task.Run(() => _person = new Person(_fName, _sName, _email, BDate));
 
-        private void AsyncTask()
-        {
-            _person = new Person(_fName, _sName, _email, BDate);
             if (ІsValidBDate())
             {           
                 if (DateTime.Now.Month == BDate.Month && DateTime.Now.Day == BDate.Day)
@@ -140,8 +137,8 @@ namespace Practice1._1.ViewModels
                 TxFName = _fName;
                 TxSName = _sName;
                 IsAdult = AgeValue() >= 18;
-                WestData = WestDataSign();
-                ChineseData = ChineseDataSign();
+                await Task.Run(() => WestData = WestDataSign());
+                await Task.Run(() => ChineseData = ChineseDataSign());
                 return;
             }
             СlearFields();
