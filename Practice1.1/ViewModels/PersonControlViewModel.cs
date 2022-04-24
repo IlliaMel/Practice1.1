@@ -21,9 +21,12 @@ namespace Practice1._1.ViewModels
         private bool _isAdult;
         private string _chineseData;
         private string _westData;
-        private string _fName = "";
-        private string _sName = "";
-        private string _email = "";
+        private string _fName = "fName";
+        private string _sName = "sName";
+        private string _email = "email";
+        #endregion
+
+        #region ValueDataType
         private enum ChineseDataEnum { Monkey, Rooster, Dog, Pig, Rat, Ox, Tiger, Rabbit, Dragon, Snake, Horse, Goat };
         #endregion
 
@@ -117,15 +120,15 @@ namespace Practice1._1.ViewModels
                 return true;
             return false;
         }
-        private void Action()
+        private async Task Action()
         {
-            Task.Factory.StartNew(() => AsyncTask());
+            await Task.Factory.StartNew(() => AsyncTask());
         }
 
         private void AsyncTask()
         {
             _person = new Person(_fName, _sName, _email, BDate);
-            if (isValidBDate())
+            if (ІsValidBDate())
             {           
                 if (DateTime.Now.Month == BDate.Month && DateTime.Now.Day == BDate.Day)
                 {
@@ -136,15 +139,15 @@ namespace Practice1._1.ViewModels
                 TxEmail = _email;
                 TxFName = _fName;
                 TxSName = _sName;
-                IsAdult = ageValue() >= 18;
+                IsAdult = AgeValue() >= 18;
                 WestData = WestDataSign();
                 ChineseData = ChineseDataSign();
                 return;
             }
-            clearFields();
+            СlearFields();
         }
 
-        private void clearFields()
+        private void СlearFields()
         {
             IsAdult = false;
             IsBirthday = false;
@@ -160,30 +163,30 @@ namespace Practice1._1.ViewModels
             MessageBox.Show("Illegal Data: write real BDay and your age can't be higher than 135 ");
         }
 
-        private bool isValidBDate()
+        private bool ІsValidBDate()
         {
-            if (ageValue() > 135 || BDate.CompareTo(DateTime.Now) > 0)
+            if (AgeValue() > 135 || BDate.CompareTo(DateTime.Now) > 0)
                 return false;
             return true;
         }
         private string WestDataSign()
         {
-            int Month = BDate.Month;
-            int Day = BDate.Day;
-            switch (Month)
+            int month = BDate.Month;
+            int day = BDate.Day;
+            switch (month)
             {
-                case 12: return (Day >= 22) ? "Capricorn" : "Sagittarius";
-                case 11: return (Day >= 23) ? "Sagittarius" : "Scorpio";
-                case 10: return (Day >= 23) ? "Scorpio" : "Libra";
-                case 9: return (Day >= 23) ? "Libra" : "Virgo";
-                case 8: return (Day >= 23) ? "Virgo" : "Leo";
-                case 7: return (Day >= 23) ? "Leo" : "Cancer";
-                case 6: return (Day >= 22) ? "Cancer" : "Gemini";
-                case 5: return (Day >= 22) ? "Gemini" : "Taurus";
-                case 4: return (Day >= 21) ? "Taurus" : "Aries";
-                case 3: return (Day >= 21) ? "Aries" : "Pisces";
-                case 2: return (Day >= 20) ? "Pisces" : "Aquarius";
-                case 1: return (Day >= 21) ? "Aquarius" : "Capricorn";
+                case 12: return (day >= 22) ? "Capricorn" : "Sagittarius";
+                case 11: return (day >= 23) ? "Sagittarius" : "Scorpio";
+                case 10: return (day >= 23) ? "Scorpio" : "Libra";
+                case 9: return (day >= 23) ? "Libra" : "Virgo";
+                case 8: return (day >= 23) ? "Virgo" : "Leo";
+                case 7: return (day >= 23) ? "Leo" : "Cancer";
+                case 6: return (day >= 22) ? "Cancer" : "Gemini";
+                case 5: return (day >= 22) ? "Gemini" : "Taurus";
+                case 4: return (day >= 21) ? "Taurus" : "Aries";
+                case 3: return (day >= 21) ? "Aries" : "Pisces";
+                case 2: return (day >= 20) ? "Pisces" : "Aquarius";
+                case 1: return (day >= 21) ? "Aquarius" : "Capricorn";
                 default: return "";
             }
         }
@@ -193,7 +196,7 @@ namespace Practice1._1.ViewModels
             return (ChineseDataEnum)((BDate.Year % 12)) + "";
         }
 
-        private int ageValue()
+        private int AgeValue()
         {    
             if (BDate.Month.CompareTo(DateTime.Now.Month) < 0)
                 return DateTime.Now.Year - BDate.Year;
