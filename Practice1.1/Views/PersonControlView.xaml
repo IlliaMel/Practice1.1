@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Practice1._1.Views"
              mc:Ignorable="d" 
-         d:DesignHeight="250" d:DesignWidth="340" >
+         d:DesignHeight="330" d:DesignWidth="500" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -25,9 +25,9 @@
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Text="Write Your Information" HorizontalAlignment="Center" FontSize="13" Foreground="Black" Margin="5,5,5,2" ></TextBlock>
 
-        <TextBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" FontSize="11" Foreground="Black" ToolTip="FName" Text="{Binding TbFName, Mode=TwoWay}"  Margin="5,5,5,2" ></TextBox>
-        <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" FontSize="11" Foreground="Black" ToolTip="SName" Text="{Binding TbSName, Mode=TwoWay}"  Margin="5,5,5,2" ></TextBox>
-        <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2"  HorizontalAlignment="Center" FontSize="11" ToolTip="Email" Text="{Binding TbEmail, Mode=TwoWay}" Foreground="Black" Margin="5,5,5,2" ></TextBox>
+        <TextBox Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" FontSize="11" Foreground="Black" ToolTip="FName" Text="{Binding TbFName, Mode=TwoWay}"  Margin="5,5,5,2" Padding="15,0,15,0"></TextBox>
+        <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" FontSize="11" Foreground="Black" ToolTip="SName" Text="{Binding TbSName, Mode=TwoWay}"  Margin="5,5,5,2" Padding="15,0,15,0"></TextBox>
+        <TextBox Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2"  HorizontalAlignment="Center" FontSize="11" ToolTip="Email" Text="{Binding TbEmail, Mode=TwoWay}" Foreground="Black" Margin="5,5,5,2" Padding="15,0,15,0"></TextBox>
 
         <DatePicker Name="DpBDate" Grid.Row="2" Grid.Column="0"  Grid.ColumnSpan="4" IsDropDownOpen="False" SelectedDateFormat="Short" SelectedDate="{Binding BDate}"/>
 

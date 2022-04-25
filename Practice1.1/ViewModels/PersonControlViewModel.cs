@@ -14,17 +14,17 @@ namespace Practice1._1.ViewModels
     class PersonControlViewModel : INotifyPropertyChanged
     {
         #region Fields
+        private Window window = Application.Current.MainWindow;
         public event PropertyChangedEventHandler PropertyChanged;
         private RelayCommand<object> _checkCommand;
-
         private Person _person = new Person();
         private DateTime _bDate = DateTime.MinValue;
         private bool _isBirthday;
         private bool _isAdult;
         private string _chineseData;
         private string _westData;
-        private string _fName = "fName";
-        private string _sName = "sName";
+        private string _fName = "FName";
+        private string _sName = "SName";
         private string _email = "email@22d.com";
         #endregion
 
@@ -119,6 +119,7 @@ namespace Practice1._1.ViewModels
         #region BusinessLogic
         private bool CanExecute(object obj)
         {
+
             if (!TbFName.Equals("") && !TbSName.Equals("") && !TbEmail.Equals(""))
                 return true;
             return false;
@@ -126,9 +127,10 @@ namespace Practice1._1.ViewModels
 
         private async Task Action()
         {
-         
+            
             try
             {
+                window.IsEnabled = false;
                 _person = new Person(_fName, _sName, _email, BDate);
                 if (ІsValidBDate())
             {
@@ -143,7 +145,7 @@ namespace Practice1._1.ViewModels
                 TxSName = _sName;
                 IsAdult = AgeValue() >= 18;
                 await Task.Run(() => WestData = WestDataSign());
-                await Task.Run(() => ChineseData = ChineseDataSign());
+                await Task.Run(() => ChineseData = ChineseDataSign());               
                 return;
             }
 
@@ -158,6 +160,9 @@ namespace Practice1._1.ViewModels
             {
                 MessageBox.Show(ex.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
+            }
+            finally{
+                window.IsEnabled = true;
             }
             СlearFields();
         }
