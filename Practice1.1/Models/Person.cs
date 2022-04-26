@@ -19,15 +19,9 @@ namespace Practice1._1.Models
 
 
         #region Constructors
-        public Person(String name, String surname, String email, DateTime bDate)
+        public Person(Guid guid, String name, String surname, String email, DateTime bDate)
         {
-            if (!Regex.IsMatch(name, "^[A-Z][a-zA-Z]*$"))
-                throw new InvalidPersonDataException("Invalid Name");
-            if (!Regex.IsMatch(surname, "^[A-Z][a-zA-Z]*$"))
-                throw new InvalidPersonDataException("Invalid Surname");
-            if (!Regex.IsMatch(email, @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"))
-                throw new InvalidPersonDataException("Invalid Email");
-
+            Guid = guid;
             Name = name;
             Surname = surname;
             Email = email;
@@ -42,7 +36,7 @@ namespace Practice1._1.Models
         }
 
         public Person(String name, String surname, DateTime bDate)
-        {         
+        {
             Name = name;
             Surname = surname;
             BDate = bDate;
@@ -54,6 +48,8 @@ namespace Practice1._1.Models
         #endregion
 
         #region Properties
+
+        public Guid Guid { get; }
         public String Name
         {
             get { return _name; }
