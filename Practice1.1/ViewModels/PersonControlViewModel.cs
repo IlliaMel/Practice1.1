@@ -13,6 +13,7 @@ namespace Practice1._1.ViewModels
 {
     class PersonControlViewModel : INotifyPropertyChanged
     {
+        /*
         #region Fields
         private Window window = Application.Current.MainWindow;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -131,7 +132,7 @@ namespace Practice1._1.ViewModels
             try
             {
                 window.IsEnabled = false;
-                _person = new Person(_fName, _sName, _email, BDate);
+               // _person = new DBPerson(_fName, _sName, _email, BDate);
                 if (ІsValidBDate())
             {
                 if (DateTime.Now.Month == BDate.Month && DateTime.Now.Day == BDate.Day)
@@ -228,6 +229,8 @@ namespace Practice1._1.ViewModels
         #endregion
 
 
-
+        */
+        public event PropertyChangedEventHandler PropertyChanged;
     }
+
 }
