@@ -132,8 +132,8 @@ namespace Practice1._1.ViewModels
             {
                 window.IsEnabled = false;
                 _person = new Person(_fName, _sName, _email, BDate);
-                if (ІsValidBDate())
-            {
+                ІsValidBDate();
+         
                 if (DateTime.Now.Month == BDate.Month && DateTime.Now.Day == BDate.Day)
                 {
                     IsBirthday = true;
@@ -147,7 +147,7 @@ namespace Practice1._1.ViewModels
                 await Task.Run(() => WestData = WestDataSign());
                 await Task.Run(() => ChineseData = ChineseDataSign());               
                 return;
-            }
+            
 
 
             }
@@ -163,8 +163,9 @@ namespace Practice1._1.ViewModels
             }
             finally{
                 window.IsEnabled = true;
+                СlearFields();
             }
-            СlearFields();
+           
         }
 
         private void СlearFields()
@@ -183,11 +184,10 @@ namespace Practice1._1.ViewModels
             MessageBox.Show("Illegal Data: write real BDay and your age can't be higher than 135 ");
         }
 
-        private bool ІsValidBDate()
+        private void ІsValidBDate()
         {
             if (AgeValue() > 135 || BDate.CompareTo(DateTime.Now) > 0)
-                return false;
-            return true;
+                throw new InvalidPersonDataException("Illegal Data: write real BDay and your age can't be higher than 135");
         }
         private string WestDataSign()
         {
