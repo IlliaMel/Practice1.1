@@ -78,5 +78,15 @@ namespace Practice1._1.Repositories
 
             return res;
         }
+
+        public bool Remove(string Guid)
+        {
+            string filePath = Path.Combine(BaseFolder, Guid);
+            if (!File.Exists(filePath))
+                return false;
+            File.Delete(filePath);
+            return true;
+        }
+
     }
 }

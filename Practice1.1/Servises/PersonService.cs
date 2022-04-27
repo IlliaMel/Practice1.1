@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Practice1._1.Services
 {
-    class UserService
+    class PersonService
     {
         private static FileRepository Repository = new FileRepository();
 
@@ -17,9 +17,23 @@ namespace Practice1._1.Services
             var res = new List<Person>();
             foreach (var user in Repository.GetAll())
             {
-                res.Add(new Person(user.Guid, user.Name, user.Surname, user.Email, user.BDate));
+                res.Add(new Person(user.Guid, user.Name, user.Surname, user.Email, user.BDate, user.IsBirthday , user.WestSign , user.ChineseSign , user.IsBirthday));
             }
             return res;
         }
+
+
+        public bool Remove(string Guid)
+        {
+            return Repository.Remove(Guid);
+        }
+
+        public async Task AddOrUpdateAsync(DBPerson obj)
+        {
+            await Repository.AddOrUpdateAsync(obj);
+        }
+
+
+
     }
 }

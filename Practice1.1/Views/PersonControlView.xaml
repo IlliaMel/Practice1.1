@@ -34,7 +34,7 @@
         <DatePicker Name="DpBDate" Grid.Row="1" Grid.Column="5"  Grid.ColumnSpan="2" IsDropDownOpen="False" SelectedDateFormat="Short" SelectedDate="{Binding BDate}"/>
 
 
-        <Button Name="BAdd" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Content="Add" Command ="{Binding Add}" Margin="0,10,0,10" Padding="15,0,15,0" Foreground="Black"></Button>
+        <Button Name="BAdd" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Content="Add" Command ="{Binding AddCommand}" Margin="0,10,0,10" Padding="15,0,15,0" Foreground="Black"></Button>
         <Button Name="BEdit" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Content="Edit" Command ="{Binding Edit}" Margin="0,10,0,10" Padding="15,0,15,0" Foreground="Black"></Button>
         <Button Name="BRemove" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Content="Remove" Command ="{Binding Remove}" Margin="0,10,0,10" Padding="5,0,5,0" Foreground="Black"></Button>
         <Button Name="BFilter" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Content="Filter" Command ="{Binding Filter}" Margin="0,10,0,10" Padding="12,0,12,0" Foreground="Black"></Button>
@@ -46,13 +46,15 @@
         <DataGrid Grid.Row="4" Grid.ColumnSpan="8" ItemsSource="{Binding Users, Mode=OneWay}" AutoGenerateColumns="False" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="User Id"     MinWidth="50" Width="Auto" Binding="{Binding Guid}"></DataGridTextColumn>
-                <DataGridTextColumn Header="FName"       MinWidth="80" Width="Auto" Binding="{Binding FName}"></DataGridTextColumn>
-                <DataGridTextColumn Header="SName"       MinWidth="80" Width="Auto" Binding="{Binding SName}"></DataGridTextColumn>
+                <DataGridTextColumn Header="FName"       MinWidth="80" Width="Auto" Binding="{Binding Name}"></DataGridTextColumn>
+                <DataGridTextColumn Header="SName"       MinWidth="80" Width="Auto" Binding="{Binding Surname}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Email"       MinWidth="80" Width="Auto" Binding="{Binding Email}"></DataGridTextColumn>
                 <DataGridTextColumn Header="BDate"       MinWidth="80" Width="Auto" Binding="{Binding BDate}"></DataGridTextColumn>
+                <DataGridTextColumn Header="IsBday"      MinWidth="80" Width="Auto" Binding="{Binding IsBirthday}"></DataGridTextColumn>
                 <DataGridTextColumn Header="IsAdult"     MinWidth="50" Width="Auto" Binding="{Binding IsAdult}"></DataGridTextColumn>
                 <DataGridTextColumn Header="WestSign"    MinWidth="60" Width="Auto" Binding="{Binding WestSign}"></DataGridTextColumn>
                 <DataGridTextColumn Header="ChineseSign" MinWidth="60" Width="Auto" Binding="{Binding ChineseSign}"></DataGridTextColumn>
+
             </DataGrid.Columns>
         </DataGrid>
 

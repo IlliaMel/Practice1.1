@@ -10,22 +10,19 @@ namespace Practice1._1.Models
     class Person
     {
 
-        #region Fileds
-        private String _name;
-        private String _surname;
-        private String _email;
-        private DateTime _bDate;
-        #endregion
-
 
         #region Constructors
-        public Person(Guid guid, String name, String surname, String email, DateTime bDate)
+        public Person(Guid guid, String name, String surname, String email, DateTime bDate, bool isAdult, string westSign, string chineseSign, bool isBirthday)
         {
             Guid = guid;
             Name = name;
             Surname = surname;
             Email = email;
             BDate = bDate;
+            IsAdult = isAdult;
+            WestSign = westSign;
+            ChineseSign = chineseSign;
+            IsBirthday = isBirthday;
         }
 
         public Person(String name, String surname, String email)
@@ -50,26 +47,15 @@ namespace Practice1._1.Models
         #region Properties
 
         public Guid Guid { get; }
-        public String Name
-        {
-            get { return _name; }
-            private set { _name = value; }
-        }
-        public String Surname
-        {
-            get { return _surname; }
-            private set { _surname = value; }
-        }
-        public String Email
-        {
-            get { return _email; }
-            private set { _email = value; }
-        }
-        public DateTime BDate
-        {
-            get { return _bDate; }
-            private set { _bDate = value; }
-        }
+        public string Name { get; }
+        public string Surname { get; }
+        public string Email { get; }
+        public DateTime BDate { get; }
+        public bool IsAdult { get; }
+        public string WestSign { get; }
+        public string ChineseSign { get; }
+        public bool IsBirthday { get; }
+
         #endregion
 
     }

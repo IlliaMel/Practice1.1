@@ -88,7 +88,7 @@
     <Compile Include="Models\DBPerson.cs" />
     <Compile Include="Models\Person.cs" />
     <Compile Include="Repositories\FileRepositorycs.cs" />
-    <Compile Include="Servises\UserSrvices.cs" />
+    <Compile Include="Servises\PersonService.cs" />
     <Compile Include="Tools\MyExceptions\InvalidDateException.cs" />
     <Compile Include="Tools\MyExceptions\InvalidPersonDataException.cs" />
     <Compile Include="Tools\RelayCommand.cs" />

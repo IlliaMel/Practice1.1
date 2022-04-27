@@ -6,27 +6,32 @@ using Practice1._1.Tools;
 using Practice1._1.Tools.MyExceptions;
 using System.Runtime.CompilerServices;
 using System.Windows;
-
-
+using Practice1._1.Services;
+using System.Collections.ObjectModel;
 
 namespace Practice1._1.ViewModels
 {
     class PersonControlViewModel : INotifyPropertyChanged
-    {
-        /*
+    {        
         #region Fields
         private Window window = Application.Current.MainWindow;
         public event PropertyChangedEventHandler PropertyChanged;
-        private RelayCommand<object> _checkCommand;
-        private Person _person = new Person();
         private DateTime _bDate = DateTime.MinValue;
-        private bool _isBirthday;
-        private bool _isAdult;
-        private string _chineseData;
-        private string _westData;
+
+        private ObservableCollection<Person> _users;
+        private RelayCommand<object> _checkCommand;
+        private PersonService personService = new PersonService();
+
         private string _fName = "FName";
         private string _sName = "SName";
-        private string _email = "email@22d.com";
+        private string _email = "email@gmail.com";
+        #endregion
+
+        #region Constructors
+        public PersonControlViewModel()
+        {
+            _users = new ObservableCollection<Person>(personService.GetAllUsers());
+        }
         #endregion
 
         #region ValueDataType
@@ -35,12 +40,20 @@ namespace Practice1._1.ViewModels
 
 
         #region Properties
-        public RelayCommand<object> CheckDataCommand
+
+       
+        public RelayCommand<object> AddCommand
         {
             get
             {
-                return _checkCommand ?? (_checkCommand = new RelayCommand<object>(_ => Action(), CanExecute));
+                return _checkCommand ?? (_checkCommand = new RelayCommand<object>(_ =>  Action(), CanExecute));
             }
+        }
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = this.PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
         public DateTime BDate
         {
@@ -49,73 +62,38 @@ namespace Practice1._1.ViewModels
                     return DateTime.Now;
                 return _bDate;
             }
-            set { _bDate = value; OnChanged(); }
-        }
-        public bool IsBirthday
-        {
-            get { return _isBirthday; }
-            set { _isBirthday = value; OnChanged(); }
+            set { _bDate = value; OnPropertyChanged(); }
         }
 
-        public bool IsAdult
+        public ObservableCollection<Person> Users
         {
-            get { return _isAdult; }
-            set { _isAdult = value; OnChanged(); }
+            get { return _users; }
+            private set
+            {
+                _users = value;
+                OnPropertyChanged();
+            }
         }
-        public string ChineseData
-        {
-            get { return _chineseData; }
-            set { _chineseData = value; OnChanged(); }
-        }
-
-        public string WestData
-        {
-            get { return _westData; }
-            set { _westData = value; OnChanged(); }
-        }
-        public string TxSName
-        {
-            get { return _sName;}
-            set { _sName = value; OnChanged(); }
-        }
-
-        public string TxFName
-        {
-            get { return _fName; }
-            set { _fName = value; OnChanged(); }
-        }
-
-        public string TxEmail
-        {
-            get { return _email;}
-            set { _email = value; OnChanged(); }
-        }
-
         public string TbSName
         {
             get { return _sName; }
-            set { _sName = value; OnChanged(); }
+            set { _sName = value; OnPropertyChanged(); }
         }
 
 
         public string TbFName
         {
             get { return _fName; }
-            set { _fName = value; OnChanged(); }
+            set { _fName = value; OnPropertyChanged(); }
         }
 
         public string TbEmail
         {
             get { return _email; }
-            set { _email = value; OnChanged(); }
+            set { _email = value; OnPropertyChanged(); }
         }
         #endregion
 
-        protected virtual void OnChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         #region BusinessLogic
         private bool CanExecute(object obj)
@@ -132,26 +110,26 @@ namespace Practice1._1.ViewModels
             try
             {
                 window.IsEnabled = false;
-               // _person = new DBPerson(_fName, _sName, _email, BDate);
-                if (ІsValidBDate())
-            {
+                ІsValidBDate();
+                bool isBirthday = false;
+                bool isAdult = false;
+                string chineseData = "";
+                string westData = "";
+
                 if (DateTime.Now.Month == BDate.Month && DateTime.Now.Day == BDate.Day)
                 {
-                    IsBirthday = true;
+                    isBirthday = true;
                     MessageBox.Show("Happy B-Day!!!");
                 }
 
-                TxEmail = _email;
-                TxFName = _fName;
-                TxSName = _sName;
-                IsAdult = AgeValue() >= 18;
-                await Task.Run(() => WestData = WestDataSign());
-                await Task.Run(() => ChineseData = ChineseDataSign());               
+                isAdult = AgeValue() >= 18;
+                await Task.Run(() => westData = WestDataSign());
+                await Task.Run(() => chineseData = ChineseDataSign());
+                DBPerson _dbperson = new DBPerson(_fName, _sName, _email, BDate, isAdult, chineseData, westData, isBirthday);
+                await Task.Run(() => personService.AddOrUpdateAsync(_dbperson));
+                updateTable();
                 return;
-            }
-
-
-            }
+            }                            
             catch (InvalidPersonDataException ex)
             {
                 MessageBox.Show(ex.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -163,32 +141,28 @@ namespace Practice1._1.ViewModels
                 return;
             }
             finally{
+                СlearFields();
                 window.IsEnabled = true;
             }
-            СlearFields();
+        }
+
+        private void updateTable()
+        {
+            Users = new ObservableCollection<Person>(personService.GetAllUsers());
         }
 
         private void СlearFields()
         {
-            IsAdult = false;
-            IsBirthday = false;
-            TxEmail = "";
-            TxFName = "";
-            TxSName = "";
             TbFName = "";
             TbSName = "";
             TbEmail = "";
-            WestData = "";
-            ChineseData = "";
             BDate = DateTime.Now;
-            MessageBox.Show("Illegal Data: write real BDay and your age can't be higher than 135 ");
         }
 
-        private bool ІsValidBDate()
+        private void ІsValidBDate()
         {
             if (AgeValue() > 135 || BDate.CompareTo(DateTime.Now) > 0)
-                return false;
-            return true;
+                throw new InvalidPersonDataException("Illegal Data: write real BDay and your age can't be higher than 135");
         }
         private string WestDataSign()
         {
@@ -229,8 +203,6 @@ namespace Practice1._1.ViewModels
         #endregion
 
 
-        */
-        public event PropertyChangedEventHandler PropertyChanged;
     }
 
 }

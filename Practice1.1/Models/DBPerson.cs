@@ -10,7 +10,7 @@ namespace Practice1._1.Models
 {
     class DBPerson
     {
-        public DBPerson(String name, String surname, String email, DateTime bDate)
+        public DBPerson(String name, String surname, String email, DateTime bDate, bool isAdult , string westSign , string chineseSign , bool isBirthday)
         {
 
             if (!Regex.IsMatch(name, "^[A-Z][a-zA-Z]*$"))
@@ -25,6 +25,10 @@ namespace Practice1._1.Models
             Surname = surname;
             Email = email;
             BDate = bDate;
+            IsAdult = isAdult;
+            WestSign = westSign;
+            ChineseSign = chineseSign;
+            IsBirthday = isBirthday;
         }
 
         public Guid Guid { get; }
@@ -32,6 +36,10 @@ namespace Practice1._1.Models
         public string Surname { get; }
         public string Email { get; }
         public DateTime BDate { get; }
+        public bool IsAdult { get; }
+        public string WestSign { get; }
+        public string ChineseSign { get; }
+        public bool IsBirthday { get; }
 
 
     }
