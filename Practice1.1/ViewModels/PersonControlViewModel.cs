@@ -26,6 +26,7 @@ namespace Practice1._1.ViewModels
         private RelayCommand<object> _editCommand;
         private RelayCommand<object> _filterCommand;
         private RelayCommand<object> _allCommand;
+        private RelayCommand<object> _sortCommand;
 
         private PersonService personService = new PersonService();
 
@@ -45,7 +46,7 @@ namespace Practice1._1.ViewModels
                 "Add: Enter Name SurName and Email before add; \n" +
                 "Edit: Click on certain row(Person) in table to Edit;\n" +
                 "Remove: Click on certain row(Person) in table to Remove;";
-            UpdateTable();
+            UpdateTable(3);
         }
         #endregion
 
@@ -65,19 +66,27 @@ namespace Practice1._1.ViewModels
         }
 
         #region RelayCommands
-
+        public RelayCommand<object> SortCommand
+        {
+            get
+            {
+                return _sortCommand ?? (_sortCommand = new RelayCommand<object>(_ => UpdateTable(2)));
+            }
+        }
         public RelayCommand<object> AllCommand
         {
             get
             {
-                return _allCommand ?? (_allCommand = new RelayCommand<object>(_ => UpdateTable()));
+                return _allCommand ?? (_allCommand = new RelayCommand<object>(_ => UpdateTable(3)));
             }
         }
+
+        
         public RelayCommand<object> FilterCommand
         {
             get
             {
-                return _filterCommand ?? (_filterCommand = new RelayCommand<object>(_ => Filter(), CanExecuteFilter));
+                return _filterCommand ?? (_filterCommand = new RelayCommand<object>(_ => UpdateTable(1), CanExecuteFilter));
             }
         }
 
@@ -214,12 +223,6 @@ namespace Practice1._1.ViewModels
             return false;
         }
 
-        private void Filter()
-        {
-            window.IsEnabled = false;
-            Users = new ObservableCollection<Person>(personService.GetFilterUsers());
-            window.IsEnabled = true;
-        }
 
         private async Task Remove()
         {
@@ -227,7 +230,6 @@ namespace Practice1._1.ViewModels
             try
             {
                 await Task.Run(() => personService.Remove(_number));
-                UpdateTable();
             }
             catch (FileNotFoundException ex)
             {
@@ -237,7 +239,7 @@ namespace Practice1._1.ViewModels
             {
                 window.IsEnabled = true;
             }
-            UpdateTable();
+            UpdateTable(3);
 
         }
 
@@ -275,7 +277,7 @@ namespace Practice1._1.ViewModels
                     await Task.Run(() => personService.AddAsync(_dbperson));
                 }
              
-                UpdateTable();
+                UpdateTable(3);
             }                            
             catch (InvalidPersonDataException ex)
             {
@@ -291,9 +293,21 @@ namespace Practice1._1.ViewModels
             СlearFields();
         }
 
-        private void UpdateTable()
+        private void UpdateTable(int key)
         {
-            Users = new ObservableCollection<Person>(personService.GetAllUsers());
+            switch (key)
+            {
+                case 1:
+                    Users = new ObservableCollection<Person>(personService.GetFilterUsers());
+                    break;
+                case 2:
+                    Users = new ObservableCollection<Person>(personService.SortByNamesUsers());
+                    break;
+                default:
+                    Users = new ObservableCollection<Person>(personService.GetAllUsers());
+                    break;
+            }
+            
         }
 
         private void СlearFields()

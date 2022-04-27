@@ -34,6 +34,21 @@ namespace Practice1._1.Services
             return res;
         }
 
+        public List<Person> SortByNamesUsers() { 
+            var res = new List<Person>();
+            foreach (var user in Repository.GetAll())
+            {
+                 res.Add(new Person(user.Guid, user.Name, user.Surname, user.Email, user.BDate, user.IsAdult, user.WestSign, user.ChineseSign, user.IsBirthday));
+            }
+
+            IEnumerable<Person> Users = res.OrderBy(s => s.Name);
+            var result = new List<Person>();
+            foreach (Person person in Users){
+                result.Add(person);
+            }
+            
+            return result;
+        }
 
         public void Remove(string Guid)
         {
