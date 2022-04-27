@@ -25,23 +25,6 @@ namespace Practice1._1.Models
             IsBirthday = isBirthday;
         }
 
-        public Person(String name, String surname, String email)
-        {
-            Name = name;
-            Surname = surname;
-            Email = email;
-        }
-
-        public Person(String name, String surname, DateTime bDate)
-        {
-            Name = name;
-            Surname = surname;
-            BDate = bDate;
-        }
-
-        public Person()
-        {
-        }
         #endregion
 
         #region Properties

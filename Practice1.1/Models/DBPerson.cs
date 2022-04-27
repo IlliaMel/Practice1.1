@@ -31,6 +31,27 @@ namespace Practice1._1.Models
             IsBirthday = isBirthday;
         }
 
+        public DBPerson(Guid guid, String name, String surname, String email, DateTime bDate, bool isAdult, string westSign, string chineseSign, bool isBirthday)
+        {
+
+            if (!Regex.IsMatch(name, "^[A-Z][a-zA-Z]*$"))
+                throw new InvalidPersonDataException("Invalid Name");
+            if (!Regex.IsMatch(surname, "^[A-Z][a-zA-Z]*$"))
+                throw new InvalidPersonDataException("Invalid Surname");
+            if (!Regex.IsMatch(email, @"^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"))
+                throw new InvalidPersonDataException("Invalid Email");
+
+            Guid = guid;
+            Name = name;
+            Surname = surname;
+            Email = email;
+            BDate = bDate;
+            IsAdult = isAdult;
+            WestSign = westSign;
+            ChineseSign = chineseSign;
+            IsBirthday = isBirthday;
+        }
+
         public Guid Guid { get; }
         public string Name { get; }
         public string Surname { get; }

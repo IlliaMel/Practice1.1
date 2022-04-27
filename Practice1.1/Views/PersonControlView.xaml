@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Practice1._1.Views"
              mc:Ignorable="d" 
-         d:DesignHeight="330" d:DesignWidth="600" >
+         d:DesignHeight="550" d:DesignWidth="800" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -15,7 +15,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -26,7 +26,7 @@
         </Grid.ColumnDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="8" Text="Information Table" HorizontalAlignment="Center" FontSize="13" Foreground="Black" Margin="5,5,5,2" ></TextBlock>
 
-        <TextBox Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Center" FontSize="11" Foreground="Black" ToolTip="№" Text="{Binding TbNumber, Mode=TwoWay}"  Margin="5,5,5,2" Padding="10,0,10,0"></TextBox>
+        <TextBlock Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Center" FontSize="11" Foreground="Black" ToolTip="№" Text="{Binding TxNumber, Mode=TwoWay}"  Margin="5,5,5,2" Padding="10,0,10,0"></TextBlock>
         <TextBox Grid.Row="1" Grid.Column="1"  HorizontalAlignment="Center" FontSize="11" Foreground="Black" ToolTip="FName" Text="{Binding TbFName, Mode=TwoWay}"  Margin="5,5,5,2" Padding="15,0,15,0"></TextBox>
         <TextBox Grid.Row="1" Grid.Column="2"  HorizontalAlignment="Center" FontSize="11" Foreground="Black" ToolTip="SName" Text="{Binding TbSName, Mode=TwoWay}"  Margin="5,5,5,2" Padding="15,0,15,0"></TextBox>
         <TextBox Grid.Row="1" Grid.Column="3"  HorizontalAlignment="Center" FontSize="11" ToolTip="Email" Text="{Binding TbEmail, Mode=TwoWay}" Foreground="Black" Margin="5,5,5,2" Padding="15,0,15,0"></TextBox>
@@ -35,15 +35,16 @@
 
 
         <Button Name="BAdd" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Content="Add" Command ="{Binding AddCommand}" Margin="0,10,0,10" Padding="15,0,15,0" Foreground="Black"></Button>
-        <Button Name="BEdit" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Content="Edit" Command ="{Binding Edit}" Margin="0,10,0,10" Padding="15,0,15,0" Foreground="Black"></Button>
-        <Button Name="BRemove" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Content="Remove" Command ="{Binding Remove}" Margin="0,10,0,10" Padding="5,0,5,0" Foreground="Black"></Button>
-        <Button Name="BFilter" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Content="Filter" Command ="{Binding Filter}" Margin="0,10,0,10" Padding="12,0,12,0" Foreground="Black"></Button>
+        <Button Name="BEdit" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Content="Edit" Command ="{Binding EditCommand}" Margin="0,10,0,10" Padding="15,0,15,0" Foreground="Black"></Button>
+        <Button Name="BRemove" Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Content="Remove" Command ="{Binding RemoveCommand}" Margin="0,10,0,10" Padding="5,0,5,0" Foreground="Black"></Button>
+        <Button Name="BFilter" Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Content="Filter by Adults" Command ="{Binding FilterCommand}" Margin="0,10,0,10" Padding="12,0,12,0" Foreground="Black"></Button>
+        <Button Name="BAll" Grid.Row="2" Grid.Column="4" Grid.ColumnSpan="1" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Content="Show All" Command ="{Binding AllCommand}" Margin="0,10,0,10" Padding="12,0,12,0" Foreground="Black"></Button>
         <Button Name="BSort" Grid.Row="2" Grid.Column="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Content="Sort" Command ="{Binding Sort}" Margin="0,10,0,10" Padding="12,0,12,0" Foreground="Black"></Button>
 
 
-        <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" Text="{Binding CurrentUser, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" FontSize="13" Foreground="Black" />
+        <TextBlock Grid.Row="3" Grid.Column="0" Margin="5" Text="{Binding TxRules, Mode=TwoWay}" HorizontalAlignment="Left" FontSize="13" Foreground="Black" />
 
-        <DataGrid Grid.Row="4" Grid.ColumnSpan="8" ItemsSource="{Binding Users, Mode=OneWay}" AutoGenerateColumns="False" >
+        <DataGrid Grid.Row="4" Grid.ColumnSpan="8" SelectedItem="{Binding SelectedItem}" ItemsSource="{Binding Users, Mode=OneWay}" AutoGenerateColumns="False" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="User Id"     MinWidth="50" Width="Auto" Binding="{Binding Guid}"></DataGridTextColumn>
                 <DataGridTextColumn Header="FName"       MinWidth="80" Width="Auto" Binding="{Binding Name}"></DataGridTextColumn>

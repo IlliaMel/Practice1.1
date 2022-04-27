@@ -1,5 +1,6 @@
 ﻿using Practice1._1.Models;
 using Practice1._1.Repositories;
+using Practice1._1.Tools.MyExceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,20 +18,39 @@ namespace Practice1._1.Services
             var res = new List<Person>();
             foreach (var user in Repository.GetAll())
             {
-                res.Add(new Person(user.Guid, user.Name, user.Surname, user.Email, user.BDate, user.IsBirthday , user.WestSign , user.ChineseSign , user.IsBirthday));
+                res.Add(new Person(user.Guid, user.Name, user.Surname, user.Email, user.BDate, user.IsAdult , user.WestSign , user.ChineseSign , user.IsBirthday));
+            }
+            return res;
+        }
+
+        public List<Person> GetFilterUsers()
+        {
+            var res = new List<Person>();
+            foreach (var user in Repository.GetAll())
+            {
+                if (user.IsAdult)
+                    res.Add(new Person(user.Guid, user.Name, user.Surname, user.Email, user.BDate, user.IsAdult, user.WestSign, user.ChineseSign, user.IsBirthday));
             }
             return res;
         }
 
 
-        public bool Remove(string Guid)
+        public void Remove(string Guid)
         {
-            return Repository.Remove(Guid);
+
+            if (!Repository.Remove(Guid))
+                throw new FileNotFoundException("File Not Found");
+                
         }
 
-        public async Task AddOrUpdateAsync(DBPerson obj)
+        public async Task AddAsync(DBPerson obj)
         {
-            await Repository.AddOrUpdateAsync(obj);
+            await Repository.AddAsync(obj);
+        }
+
+        public async Task UpdateAsync(Person obj)
+        {
+            await Repository.UpdateAsync(obj);
         }
 
 

@@ -17,7 +17,7 @@ namespace Practice1._1.Repositories
                 Directory.CreateDirectory(BaseFolder);
         }
 
-        public async Task AddOrUpdateAsync(DBPerson obj)
+        public async Task AddAsync(DBPerson obj)
         {
             var stringObj = JsonSerializer.Serialize(obj);
 
@@ -27,7 +27,17 @@ namespace Practice1._1.Repositories
             }
         }
 
-        public async Task<DBPerson> GetAsync(string Guid)
+        public async Task UpdateAsync(Person obj)
+        {
+            var stringObj = JsonSerializer.Serialize(obj);
+
+            using (StreamWriter sw = new StreamWriter(Path.Combine(BaseFolder, obj.Guid.ToString()), false))
+            {
+                await sw.WriteAsync(stringObj);
+            }
+        }
+
+        public async Task<Person> GetAsync(string Guid)
         {
             string stringObj = null;
             string filePath = Path.Combine(BaseFolder, Guid);
@@ -40,30 +50,13 @@ namespace Practice1._1.Repositories
                 stringObj = await sw.ReadToEndAsync();
             }
 
-            return JsonSerializer.Deserialize<DBPerson>(stringObj);
+            return JsonSerializer.Deserialize<Person>(stringObj);
         }
 
-        public async Task<List<DBPerson>> GetAllAsync()
+
+        public List<Person> GetAll()
         {
-            var res = new List<DBPerson>();
-            foreach (var file in Directory.EnumerateFiles(BaseFolder))
-            {
-                string stringObj = null;
-
-                using (StreamReader sw = new StreamReader(file))
-                {
-                    stringObj = await sw.ReadToEndAsync();
-                }
-
-                res.Add(JsonSerializer.Deserialize<DBPerson>(stringObj));
-            }
-
-            return res;
-        }
-
-        public List<DBPerson> GetAll()
-        {
-            var res = new List<DBPerson>();
+            var res = new List<Person>();
             foreach (var file in Directory.EnumerateFiles(BaseFolder))
             {
                 string stringObj = null;
@@ -73,7 +66,7 @@ namespace Practice1._1.Repositories
                     stringObj = sw.ReadToEnd();
                 }
 
-                res.Add(JsonSerializer.Deserialize<DBPerson>(stringObj));
+                res.Add(JsonSerializer.Deserialize<Person>(stringObj));
             }
 
             return res;

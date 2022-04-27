@@ -8,6 +8,8 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using Practice1._1.Services;
 using System.Collections.ObjectModel;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace Practice1._1.ViewModels
 {
@@ -19,18 +21,31 @@ namespace Practice1._1.ViewModels
         private DateTime _bDate = DateTime.MinValue;
 
         private ObservableCollection<Person> _users;
-        private RelayCommand<object> _checkCommand;
+        private RelayCommand<object> _addCommand;
+        private RelayCommand<object> _removeCommand;
+        private RelayCommand<object> _editCommand;
+        private RelayCommand<object> _filterCommand;
+        private RelayCommand<object> _allCommand;
+
         private PersonService personService = new PersonService();
 
+        private string _number = "GUID №";
         private string _fName = "FName";
         private string _sName = "SName";
         private string _email = "email@gmail.com";
+        private string _rules = "";
+
+        private Person _selectedPerson = null;
         #endregion
 
         #region Constructors
         public PersonControlViewModel()
         {
-            _users = new ObservableCollection<Person>(personService.GetAllUsers());
+            TxRules = "Instruction and Rules:\n" +
+                "Add: Enter Name SurName and Email before add; \n" +
+                "Edit: Click on certain row(Person) in table to Edit;\n" +
+                "Remove: Click on certain row(Person) in table to Remove;";
+            UpdateTable();
         }
         #endregion
 
@@ -41,14 +56,73 @@ namespace Practice1._1.ViewModels
 
         #region Properties
 
-       
+        private void resultDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (sender != null)
+            {
+                DataGridCell dgr = sender as DataGridCell;
+            }
+        }
+
+        #region RelayCommands
+
+        public RelayCommand<object> AllCommand
+        {
+            get
+            {
+                return _allCommand ?? (_allCommand = new RelayCommand<object>(_ => UpdateTable()));
+            }
+        }
+        public RelayCommand<object> FilterCommand
+        {
+            get
+            {
+                return _filterCommand ?? (_filterCommand = new RelayCommand<object>(_ => Filter(), CanExecuteFilter));
+            }
+        }
+
+        public RelayCommand<object> EditCommand
+        {
+            get
+            {
+                return _editCommand ?? (_editCommand = new RelayCommand<object>(_ =>  AddEdit(true), CanExecuteEdit));
+            }
+        }
+
         public RelayCommand<object> AddCommand
         {
             get
             {
-                return _checkCommand ?? (_checkCommand = new RelayCommand<object>(_ =>  Action(), CanExecute));
+                return _addCommand ?? (_addCommand = new RelayCommand<object>(_ => AddEdit(false), CanExecuteAdd));
             }
         }
+
+        public RelayCommand<object> RemoveCommand
+        {
+            get
+            {
+                return _removeCommand ?? (_removeCommand = new RelayCommand<object>(_ => Remove(), CanExecuteRemove));
+            }
+        }
+        #endregion
+
+        public Person SelectedItem
+        {
+            get { return _selectedPerson; }
+            set
+            {
+                if(value != null) {
+                    _selectedPerson = value;
+                    TxNumber = _selectedPerson.Guid.ToString();
+                    TbFName = _selectedPerson.Name;
+                    TbSName = _selectedPerson.Surname;
+                    TbEmail = _selectedPerson.Email;
+                    BDate = _selectedPerson.BDate;
+                }
+                
+            }
+        }
+
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
@@ -74,6 +148,20 @@ namespace Practice1._1.ViewModels
                 OnPropertyChanged();
             }
         }
+
+   
+            public string TxRules
+        {
+            get { return _rules; }
+            set { _rules = value; OnPropertyChanged(); }
+        }
+
+        public string TxNumber
+        {
+            get { return _number; }
+            set { _number = value; OnPropertyChanged(); }
+        }
+
         public string TbSName
         {
             get { return _sName; }
@@ -96,7 +184,14 @@ namespace Practice1._1.ViewModels
 
 
         #region BusinessLogic
-        private bool CanExecute(object obj)
+
+        private bool CanExecuteFilter(object obj)
+        {
+            if(Users.Count > 0)
+                return true;
+            return false;
+        }
+        private bool CanExecuteAdd(object obj)
         {
 
             if (!TbFName.Equals("") && !TbSName.Equals("") && !TbEmail.Equals(""))
@@ -104,9 +199,51 @@ namespace Practice1._1.ViewModels
             return false;
         }
 
-        private async Task Action()
+        private bool CanExecuteEdit(object obj)
         {
-            
+
+            if (!TxNumber.Equals("") &&  !TbFName.Equals("") && !TbSName.Equals("") && !TbEmail.Equals(""))
+                return true;
+            return false;
+        }
+        private bool CanExecuteRemove(object obj)
+        {
+
+            if (!TxNumber.Equals(""))
+                return true;
+            return false;
+        }
+
+        private void Filter()
+        {
+            window.IsEnabled = false;
+            Users = new ObservableCollection<Person>(personService.GetFilterUsers());
+            window.IsEnabled = true;
+        }
+
+        private async Task Remove()
+        {
+            window.IsEnabled = false;
+            try
+            {
+                await Task.Run(() => personService.Remove(_number));
+                UpdateTable();
+            }
+            catch (FileNotFoundException ex)
+            {
+                MessageBox.Show(ex.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            finally
+            {
+                window.IsEnabled = true;
+            }
+            UpdateTable();
+
+        }
+
+        private async Task AddEdit(bool isNeedEdit)
+        {
+            if((!isNeedEdit && _selectedPerson == null) || (isNeedEdit && _selectedPerson != null))
             try
             {
                 window.IsEnabled = false;
@@ -125,34 +262,43 @@ namespace Practice1._1.ViewModels
                 isAdult = AgeValue() >= 18;
                 await Task.Run(() => westData = WestDataSign());
                 await Task.Run(() => chineseData = ChineseDataSign());
-                DBPerson _dbperson = new DBPerson(_fName, _sName, _email, BDate, isAdult, chineseData, westData, isBirthday);
-                await Task.Run(() => personService.AddOrUpdateAsync(_dbperson));
-                updateTable();
-                return;
+
+                if (isNeedEdit)
+                {
+                    Person _person = new Person(Guid.Parse(TxNumber),_fName, _sName, _email, BDate, isAdult, chineseData, westData, isBirthday);
+                    await Task.Run(() => personService.UpdateAsync(_person));
+                    _selectedPerson = null;
+                }
+                else if(!isNeedEdit)
+                {
+                    DBPerson _dbperson = new DBPerson(_fName, _sName, _email, BDate, isAdult, chineseData, westData, isBirthday);
+                    await Task.Run(() => personService.AddAsync(_dbperson));
+                }
+             
+                UpdateTable();
             }                            
             catch (InvalidPersonDataException ex)
             {
-                MessageBox.Show(ex.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
+                MessageBox.Show(ex.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Information);         }
             catch  (InvalidDateException ex)
             {
                 MessageBox.Show(ex.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
             }
             finally{
-                СlearFields();
                 window.IsEnabled = true;
             }
+
+            СlearFields();
         }
 
-        private void updateTable()
+        private void UpdateTable()
         {
             Users = new ObservableCollection<Person>(personService.GetAllUsers());
         }
 
         private void СlearFields()
         {
+            TxNumber = "";
             TbFName = "";
             TbSName = "";
             TbEmail = "";
