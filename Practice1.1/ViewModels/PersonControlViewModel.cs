@@ -14,7 +14,7 @@ using System.Windows.Input;
 namespace Practice1._1.ViewModels
 {
     class PersonControlViewModel : INotifyPropertyChanged
-    {        
+    {
         #region Fields
         private Window window = Application.Current.MainWindow;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -36,6 +36,18 @@ namespace Practice1._1.ViewModels
         private string _email = "email@gmail.com";
         private string _rules = "";
 
+        private string[] _dateArr = { "2001-02-01T00:00:00",  "1940-01-09T00:00:00", "1980-07-14T00:00:00", "2004-07-16T00:00:00", "1989-11-27T00:00:00",
+                "2007-05-13T00:00:00", "1995-02-15T00:00:00", "1986-07-08T00:00:00", "2006-10-08T00:00:00", "1976-07-07T00:00:00", "1987-02-02T00:00:00",
+                "2002-01-01T00:00:00", "1990-11-01T00:00:00", "1988-06-04T00:00:00","2001-02-01T00:00:00", "1940-01-09T00:00:00", "1980-07-14T00:00:00", 
+                "2004-07-16T00:00:00", "1989-11-27T00:00:00", "2007-05-13T00:00:00", "1995-02-15T00:00:00", "1986-07-08T00:00:00", "2006-10-08T00:00:00", 
+                "1976-07-07T00:00:00", "1987-02-02T00:00:00","2002-01-01T00:00:00", "1990-11-01T00:00:00", "1988-06-04T00:00:00" };
+
+        private string[] _nameArr = { "Aaren", "Aazaan", "Gian", "Gianmarco", "Girijan", "Jazz", "Jedd", "Kenzi", "Mehraz", "Meshach",
+            "Aaren", "Aazaan", "Gian", "Gianmarco", "Girijan", "Jazz", "Jedd", "Kenzi", "Mehraz", "Meshach" };
+
+        private string[] _snameArr = { "Pele", "Phani", "Youcef", "Yanick", "Waqaas", "Wei", "Vuyolwethu", "Zendel", "Montgomery",
+            "Orson", "Pele", "Phani", "Youcef", "Yanick", "Waqaas", "Wei", "Vuyolwethu", "Zendel", "Montgomery", "Orson" };
+
         private Person _selectedPerson = null;
         #endregion
 
@@ -46,7 +58,9 @@ namespace Practice1._1.ViewModels
                 "Add: Enter Name SurName and Email before add; \n" +
                 "Edit: Click on certain row(Person) in table to Edit;\n" +
                 "Remove: Click on certain row(Person) in table to Remove;";
+            GenaratePersons(50);
             UpdateTable(3);
+
         }
         #endregion
 
@@ -81,7 +95,7 @@ namespace Practice1._1.ViewModels
             }
         }
 
-        
+
         public RelayCommand<object> FilterCommand
         {
             get
@@ -94,7 +108,7 @@ namespace Practice1._1.ViewModels
         {
             get
             {
-                return _editCommand ?? (_editCommand = new RelayCommand<object>(_ =>  AddEdit(true), CanExecuteEdit));
+                return _editCommand ?? (_editCommand = new RelayCommand<object>(_ => AddEdit(true), CanExecuteEdit));
             }
         }
 
@@ -120,7 +134,8 @@ namespace Practice1._1.ViewModels
             get { return _selectedPerson; }
             set
             {
-                if(value != null) {
+                if (value != null)
+                {
                     _selectedPerson = value;
                     TxNumber = _selectedPerson.Guid.ToString();
                     TbFName = _selectedPerson.Name;
@@ -128,7 +143,7 @@ namespace Practice1._1.ViewModels
                     TbEmail = _selectedPerson.Email;
                     BDate = _selectedPerson.BDate;
                 }
-                
+
             }
         }
 
@@ -140,7 +155,8 @@ namespace Practice1._1.ViewModels
         }
         public DateTime BDate
         {
-            get{
+            get
+            {
                 if (_bDate == DateTime.MinValue)
                     return DateTime.Now;
                 return _bDate;
@@ -158,8 +174,8 @@ namespace Practice1._1.ViewModels
             }
         }
 
-   
-            public string TxRules
+
+        public string TxRules
         {
             get { return _rules; }
             set { _rules = value; OnPropertyChanged(); }
@@ -196,7 +212,7 @@ namespace Practice1._1.ViewModels
 
         private bool CanExecuteFilter(object obj)
         {
-            if(Users.Count > 0)
+            if (Users.Count > 0)
                 return true;
             return false;
         }
@@ -211,7 +227,7 @@ namespace Practice1._1.ViewModels
         private bool CanExecuteEdit(object obj)
         {
 
-            if (!TxNumber.Equals("") &&  !TbFName.Equals("") && !TbSName.Equals("") && !TbEmail.Equals(""))
+            if (!TxNumber.Equals("") && !TbFName.Equals("") && !TbSName.Equals("") && !TbEmail.Equals(""))
                 return true;
             return false;
         }
@@ -223,9 +239,35 @@ namespace Practice1._1.ViewModels
             return false;
         }
 
+        private async Task GenaratePersons(int numberToGenarate)
+        {
+            Random rnd = new Random();
+            for (int i = 0; i < numberToGenarate; i++)
+            {             
+                string date = _dateArr[rnd.Next(_dateArr.Length)];
+                string name = _nameArr[rnd.Next(_nameArr.Length)];
+                string sname = _snameArr[rnd.Next(_snameArr.Length)];
+
+
+                DateTime bDate = DateTime.Parse(date);
+                bool isAdult = false;
+                string chineseData = "";
+                string westData = "";
+                bool isBirthday = isBDay(bDate);
+                isAdult = AgeValue(bDate) >= 18;
+
+                await Task.Run(() => westData = WestDataSign(bDate));
+                await Task.Run(() => chineseData = ChineseDataSign(bDate));
+                DBPerson _dbperson = new DBPerson(name, sname, name + sname + "@gmail.com", bDate, isAdult, chineseData, westData, isBirthday);
+                await Task.Run(() => personService.AddAsync(_dbperson));
+            }
+
+            UpdateTable(3);
+        }
 
         private async Task Remove()
         {
+
             window.IsEnabled = false;
             try
             {
@@ -239,56 +281,56 @@ namespace Practice1._1.ViewModels
             {
                 window.IsEnabled = true;
             }
+            СlearFields();
             UpdateTable(3);
 
         }
 
         private async Task AddEdit(bool isNeedEdit)
         {
-            if((!isNeedEdit && _selectedPerson == null) || (isNeedEdit && _selectedPerson != null))
-            try
-            {
-                window.IsEnabled = false;
-                ІsValidBDate();
-                bool isBirthday = false;
-                bool isAdult = false;
-                string chineseData = "";
-                string westData = "";
-
-                if (DateTime.Now.Month == BDate.Month && DateTime.Now.Day == BDate.Day)
+            if ((!isNeedEdit && _selectedPerson == null) || (isNeedEdit && _selectedPerson != null))
+                try
                 {
-                    isBirthday = true;
-                    MessageBox.Show("Happy B-Day!!!");
-                }
+                    window.IsEnabled = false;
+                    ІsValidBDate();
+                    bool isAdult = false;
+                    string chineseData = "";
+                    string westData = "";
+                    bool isBirthday = isBDay(BDate);
 
-                isAdult = AgeValue() >= 18;
-                await Task.Run(() => westData = WestDataSign());
-                await Task.Run(() => chineseData = ChineseDataSign());
+                    if (isBirthday)
+                        MessageBox.Show("Happy B-Day!!!");
 
-                if (isNeedEdit)
-                {
-                    Person _person = new Person(Guid.Parse(TxNumber),_fName, _sName, _email, BDate, isAdult, chineseData, westData, isBirthday);
-                    await Task.Run(() => personService.UpdateAsync(_person));
-                    _selectedPerson = null;
+                    isAdult = AgeValue(BDate) >= 18;
+                    await Task.Run(() => westData = WestDataSign(BDate));
+                    await Task.Run(() => chineseData = ChineseDataSign(BDate));
+
+                    if (isNeedEdit)
+                    {
+                        Person _person = new Person(Guid.Parse(TxNumber), _fName, _sName, _email, BDate, isAdult, chineseData, westData, isBirthday);
+                        await Task.Run(() => personService.UpdateAsync(_person));
+                        _selectedPerson = null;
+                    }
+                    else if (!isNeedEdit)
+                    {
+                        DBPerson _dbperson = new DBPerson(_fName, _sName, _email, BDate, isAdult, chineseData, westData, isBirthday);
+                        await Task.Run(() => personService.AddAsync(_dbperson));
+                    }
+
+                    UpdateTable(3);
                 }
-                else if(!isNeedEdit)
+                catch (InvalidPersonDataException ex)
                 {
-                    DBPerson _dbperson = new DBPerson(_fName, _sName, _email, BDate, isAdult, chineseData, westData, isBirthday);
-                    await Task.Run(() => personService.AddAsync(_dbperson));
+                    MessageBox.Show(ex.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
-             
-                UpdateTable(3);
-            }                            
-            catch (InvalidPersonDataException ex)
-            {
-                MessageBox.Show(ex.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Information);         }
-            catch  (InvalidDateException ex)
-            {
-                MessageBox.Show(ex.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            finally{
-                window.IsEnabled = true;
-            }
+                catch (InvalidDateException ex)
+                {
+                    MessageBox.Show(ex.Message, "Alert", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                finally
+                {
+                    window.IsEnabled = true;
+                }
 
             СlearFields();
         }
@@ -307,7 +349,7 @@ namespace Practice1._1.ViewModels
                     Users = new ObservableCollection<Person>(personService.GetAllUsers());
                     break;
             }
-            
+
         }
 
         private void СlearFields()
@@ -318,16 +360,25 @@ namespace Practice1._1.ViewModels
             TbEmail = "";
             BDate = DateTime.Now;
         }
+        private bool isBDay(DateTime bDate)
+        {
+            if (DateTime.Now.Month == bDate.Month && DateTime.Now.Day == bDate.Day)
+            {
+                return true;
+
+            }
+            return false;
+        }
 
         private void ІsValidBDate()
         {
-            if (AgeValue() > 135 || BDate.CompareTo(DateTime.Now) > 0)
+            if (AgeValue(BDate) > 135 || BDate.CompareTo(DateTime.Now) > 0)
                 throw new InvalidPersonDataException("Illegal Data: write real BDay and your age can't be higher than 135");
         }
-        private string WestDataSign()
+        private string WestDataSign(DateTime bDate)
         {
-            int month = BDate.Month;
-            int day = BDate.Day;
+            int month = bDate.Month;
+            int day = bDate.Day;
             switch (month)
             {
                 case 12: return (day >= 22) ? "Capricorn" : "Sagittarius";
@@ -346,18 +397,18 @@ namespace Practice1._1.ViewModels
             }
         }
 
-        private string ChineseDataSign()
+        private string ChineseDataSign(DateTime bDate)
         {
-            return (ChineseDataEnum)((BDate.Year % 12)) + "";
+            return (ChineseDataEnum)((bDate.Year % 12)) + "";
         }
 
-        private int AgeValue()
+        private int AgeValue(DateTime bDate)
         {
-            if (BDate.Month.CompareTo(DateTime.Now.Month) < 0)
-                return DateTime.Now.Year - BDate.Year;
-            else if (BDate.Month.CompareTo(DateTime.Now.Month) == 0 && BDate.Day.CompareTo(DateTime.Now.Day) <= 0)
-                return DateTime.Now.Year - BDate.Year;
-            return DateTime.Now.Year - BDate.Year - 1;
+            if (bDate.Month.CompareTo(DateTime.Now.Month) < 0)
+                return DateTime.Now.Year - bDate.Year;
+            else if (bDate.Month.CompareTo(DateTime.Now.Month) == 0 && bDate.Day.CompareTo(DateTime.Now.Day) <= 0)
+                return DateTime.Now.Year - bDate.Year;
+            return DateTime.Now.Year - bDate.Year - 1;
         }
 
         #endregion
